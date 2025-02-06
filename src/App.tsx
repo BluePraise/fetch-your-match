@@ -13,6 +13,7 @@ function App() {
       <Routes>
         {/* Public landing page */}
         <Route path="/" element={<Home />} />
+
         {/* Protected route for Search: only accessible to authenticated users */}
         <Route
           path="/search"
@@ -22,6 +23,9 @@ function App() {
             </ProtectedRouter>
           }
         />
+
+        {/* Public route for Logout */}
+        <Route path="/logout" element={<Home />} />
 
         {/* Fallback route for non-existent paths */}
         <Route path="*" element={<div>404: Page Not Found</div>} />
