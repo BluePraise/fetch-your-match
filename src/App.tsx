@@ -2,10 +2,8 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
-import Login from "./components/Login";
 import SearchPage from "./pages/SearchPage";
 import ProtectedRouter from "./router/ProtectedRouter";
-import PublicRouter from "./router/PublicRouter";
 import './App.css';
 
 function App() {
@@ -15,17 +13,6 @@ function App() {
       <Routes>
         {/* Public landing page */}
         <Route path="/" element={<Home />} />
-
-        {/* Public route for Login: redirect authenticated users */}
-        <Route
-          path="/login"
-          element={
-            <PublicRouter>
-              <Login />
-            </PublicRouter>
-          }
-        />
-
         {/* Protected route for Search: only accessible to authenticated users */}
         <Route
           path="/search"
