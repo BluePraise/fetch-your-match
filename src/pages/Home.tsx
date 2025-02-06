@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import SearchPage from "./SearchPage";
 import { useAuth } from "../context/AuthContext";
 import Login from "../components/Login";
 const Home: React.FC = () => {
@@ -9,8 +9,7 @@ const Home: React.FC = () => {
       <h1 className="text-8xl m-8 text-center">Find your best friend with your other friend: Fetch.</h1>
       {user ? (
             <>
-                <span>Hello, {user.name}</span>
-                <Link to="/search-dog">Find your friend</Link>
+              <SearchPage />
             </>
       ) : (
         <div className="flex justify-center">
