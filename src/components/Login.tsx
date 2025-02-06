@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 interface LoginProps {
   onClose?: () => void; // close the modal if success
 }
 
-
 const Login: React.FC<LoginProps> = ({onClose}) => {
   const { login } = useAuth();
+  const navigate = useNavigate();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -23,6 +24,8 @@ const Login: React.FC<LoginProps> = ({onClose}) => {
       await login(name, email);
       // close the modal on successful login:
       if (onClose) onClose();
+      // Redirect to the Search page after successful login
+      navigate('/search');
     } catch (err) {
       setError(`Failed to login: ${err.message}`);
     } finally {
