@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { fetchDogsSearch, fetchDogsByIds } from '../api/dogs.ts';
+import { fetchDogsSearch, fetchDogsByIds, fetchDogBreeds } from '../api/dogs.ts';
 
 // Dog interface as provided by the API
 interface Dog {
@@ -13,52 +13,168 @@ interface Dog {
 
 const SearchPage: React.FC = () => {
   const [dogs, setDogs] = useState<Dog[]>([]);
+  const [breeds, setBreeds] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const loadDogs = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        // Step 1: Get the search results (dog IDs)
-        const searchResults = await fetchDogsSearch({ size: 25 });
-        const dogIds: string[] = searchResults.resultIds;
+  // Filter states
+  const [selectedBreed, setSelectedBreed] = useState<string>('');
+  const [ageMin, setAgeMin] = useState<number | ''>('');
+  const [ageMax, setAgeMax] = useState<number | ''>('');
 
-        // Step 2: Get the full dog objects using the IDs
-        const dogsData = await fetchDogsByIds(dogIds);
-        setDogs(dogsData);
+    // Fetch available breeds on mount
+  useEffect(() => {
+    const loadBreeds = async () => {
+      try {
+        const breedData = await fetchDogBreeds();
+        setBreeds(breedData);
       } catch (err) {
-        console.error(err);
-        setError('Failed to load dogs. Please try again.');
-      } finally {
-        setLoading(false);
+        console.error('Error fetching breeds:', err);
       }
     };
+    loadBreeds();
+  }, []);
 
+  // Function to fetch dogs based on filters
+  const loadDogs = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      // parameters object for the search
+      const params: {
+        size: number;
+        breeds?: string[];
+        ageMin?: number;
+        ageMax?: number;
+      } = { size: 25 };
+
+      if (selectedBreed) {
+        params.breeds = [selectedBreed];
+      }
+      if (ageMin !== '') {
+        params.ageMin = ageMin as number;
+      }
+      if (ageMax !== '') {
+        params.ageMax = ageMax as number;
+      }
+
+      // Fetch search results (list of dog IDs)
+      const searchResults = await fetchDogsSearch(params);
+      const dogIds: string[] = searchResults.resultIds;
+
+      // Fetch the full dog objects using the IDs
+      const dogsData = await fetchDogsByIds(dogIds);
+      setDogs(dogsData);
+    } catch (err) {
+      console.error(err);
+      setError('Failed to load dogs. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Load dogs initially on mount (without filters)
+  useEffect(() => {
     loadDogs();
   }, []);
+
+  // Handle filter form submission
+  const handleFilterSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    loadDogs();
+  };
 
   // Render states: loading, error, or the list of dogs
   if (loading) return <div>Loading dogs...</div>;
   if (error) return <div>{error}</div>;
-  return (
-    <div className="search-page">
-      <h1 className="text-8xl m-8 text-center">Available Dogs</h1>
-      <ul className="dog-list grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+
+ return (
+    <div className="p-4">
+      <h1 className="text-2xl font-bold mb-4">Search Dogs</h1>
+
+      {/* Filter Form */}
+      <form onSubmit={handleFilterSubmit} className="mb-6 space-y-4">
+        <div>
+          <label className="block mb-1 font-semibold" htmlFor="breed">
+            Breed
+          </label>
+          <select
+            id="breed"
+            className="w-full border border-gray-300 rounded p-2"
+            value={selectedBreed}
+            onChange={(e) => setSelectedBreed(e.target.value)}
+          >
+            <option value="">All Breeds</option>
+            {breeds.map((breed) => (
+              <option key={breed} value={breed}>
+                {breed}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="flex space-x-4">
+          <div className="flex-1">
+            <label className="block mb-1 font-semibold" htmlFor="ageMin">
+              Min Age
+            </label>
+            <input
+              type="number"
+              id="ageMin"
+              className="w-full border border-gray-300 rounded p-2"
+              value={ageMin}
+              onChange={(e) =>
+                setAgeMin(e.target.value ? Number(e.target.value) : '')
+              }
+              placeholder="e.g. 1"
+            />
+          </div>
+          <div className="flex-1">
+            <label className="block mb-1 font-semibold" htmlFor="ageMax">
+              Max Age
+            </label>
+            <input
+              type="number"
+              id="ageMax"
+              className="w-full border border-gray-300 rounded p-2"
+              value={ageMax}
+              onChange={(e) =>
+                setAgeMax(e.target.value ? Number(e.target.value) : '')
+              }
+              placeholder="e.g. 10"
+            />
+          </div>
+        </div>
+
+        <button
+          type="submit"
+          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+        >
+          Apply Filters
+        </button>
+      </form>
+
+      {loading && <div>Loading dogs...</div>}
+      {error && <div className="text-red-600">{error}</div>}
+
+      {/* Display Dog Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         {dogs.map((dog) => (
-          <li key={dog.id} className="dog-item">
-            <img src={dog.img} alt={dog.name} style={{ width: 150 }} />
-            <div>
-              <strong>{dog.name}</strong>
-            </div>
-            <div>{dog.breed}</div>
-            <div>{dog.age} years old</div>
-            <div>ZIP: {dog.zip_code}</div>
-          </li>
+          <div key={dog.id} className="border p-4 rounded shadow">
+            <img
+              src={dog.img}
+              alt={dog.name}
+              className="w-full h-40 object-cover mb-2 rounded"
+            />
+            <h2 className="text-xl font-semibold">{dog.name}</h2>
+            <p>{dog.breed}</p>
+            <p>{dog.age} years old</p>
+            <p>ZIP: {dog.zip_code}</p>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 };
+
 export default SearchPage;

@@ -20,7 +20,7 @@ export async function fetchDogsSearch(params?: {
     params,
     withCredentials: true, // Ensure cookies are included
   });
-  return response.data;
+  return response.data; // returns an object with resultIds and pagination info
 }
 
 /**
@@ -32,5 +32,12 @@ export async function fetchDogsByIds(ids: string[]) {
     ids,
     { withCredentials: true }
   );
-  return response.data;
+  return response.data; // returns an array of dog objects
+}
+
+export async function fetchDogBreeds() {
+  const response = await axios.get(`${BASE_URL}/dogs/breeds`, {
+    withCredentials: true,
+  });
+  return response.data; // returns an array of breed names
 }
