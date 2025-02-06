@@ -44,8 +44,8 @@ const SearchPage: React.FC = () => {
   if (error) return <div>{error}</div>;
   return (
     <div className="search-page">
-      <h1>Available Dogs</h1>
-      <ul className="dog-list">
+      <h1 className="text-8xl m-8 text-center">Available Dogs</h1>
+      <ul className="dog-list grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {dogs.map((dog) => (
           <li key={dog.id} className="dog-item">
             <img src={dog.img} alt={dog.name} style={{ width: 150 }} />
