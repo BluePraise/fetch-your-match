@@ -4,16 +4,42 @@ import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import Login from "./components/Login";
 import SearchPage from "./pages/SearchPage";
-import PrivateRouter from "./router/ProtectedRouter";
+import ProtectedRouter from "./router/ProtectedRouter";
 import PublicRouter from "./router/PublicRouter";
 import './App.css';
 
 function App() {
   return (
-    <div>
+    <Router>
       <Navbar />
-      <Home />
-    </div>
+      <Routes>
+        {/* Public landing page */}
+        <Route path="/" element={<Home />} />
+
+        {/* Public route for Login: redirect authenticated users */}
+        <Route
+          path="/login"
+          element={
+            <PublicRouter>
+              <Login />
+            </PublicRouter>
+          }
+        />
+
+        {/* Protected route for Search: only accessible to authenticated users */}
+        <Route
+          path="/search"
+          element={
+            <ProtectedRouter>
+              <SearchPage />
+            </ProtectedRouter>
+          }
+        />
+
+        {/* Fallback route for non-existent paths */}
+        <Route path="*" element={<div>404: Page Not Found</div>} />
+      </Routes>
+    </Router>
   );
 }
 

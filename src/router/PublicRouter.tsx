@@ -4,7 +4,7 @@ import { Navigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 interface PublicRouterProps {
-  children: JSX.Element;
+  children: React.ReactNode;
 }
 
 const PublicRouter: React.FC<PublicRouterProps> = ({ children }) => {
