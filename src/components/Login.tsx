@@ -34,7 +34,7 @@ const Login: React.FC<LoginProps> = ({onClose}) => {
   };
 
   return (
-    <div className="text-center shadow-sm flex flex-col items-center w-2xl my-8 p-8">
+    <div className="text-center shadow-sm flex flex-col items-center w-2xl my-8 p-8 bg-white">
         <form className="flex flex-col items-center" onSubmit={handleSubmit}>
             <h2 className="text-2xl my-8">Login to start</h2>
             {error && <p style={{ color: 'red' }}>{error}</p>}
@@ -51,7 +51,7 @@ const Login: React.FC<LoginProps> = ({onClose}) => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)} required />
             <button
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                className="btn btn__primary btn--deep-purple"
                 type="submit"
                 disabled={loading}>
                 {loading ? 'Logging in...' : 'Login'}

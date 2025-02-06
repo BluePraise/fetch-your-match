@@ -93,7 +93,7 @@ const SearchPage: React.FC = () => {
 	if (error) return <div>{error}</div>;
 
 	return (
-		<div className="p-4">
+		<div className="p-4 bg-white">
 			<h1 className="text-2xl font-bold mb-4">Search Dogs</h1>
 
 			{/* Filter Form */}
@@ -158,7 +158,7 @@ const SearchPage: React.FC = () => {
         <div>
           <button
             type="submit"
-            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition cursor-pointer">
+            className="btn btn__primary btn--deep-purple">
             Apply Filters
           </button>
         </div>

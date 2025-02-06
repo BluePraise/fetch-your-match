@@ -14,6 +14,9 @@ const PublicRouter: React.FC<PublicRouterProps> = ({ children }) => {
   if (user) {
     return <Navigate to="/search" replace />;
   }
+  else {
+    return <Navigate to="/" replace />;
+  }
 
   // Otherwise, render the public component (e.g., login)
   return children;

@@ -1,7 +1,67 @@
 @import "tailwindcss";
 
+@theme components {
+  --color-fetch-yellow: #F5B255;
+}
+
 #root {
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
+}
+
+.btn {
+    --tw-text-opacity: 1;
+    border-radius: .375rem;
+    color: rgb(9 3 37/var(--tw-text-opacity));
+    cursor: pointer;
+    font-family: Lexend,sans-serif;
+    font-size: 1rem;
+    line-height: 1.5rem;
+    text-align: center;
+    transition-duration: .15s;
+    transition-property: color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,-webkit-backdrop-filter;
+    transition-property: color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter;
+    transition-property: color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter,-webkit-backdrop-filter;
+    transition-timing-function: cubic-bezier(.4,0,.2,1)
+}
+
+.btn__primary {
+    display: block;
+    padding: 1rem 1.75rem
+}
+
+@media (min-width: 768px) {
+    .btn__primary {
+        padding-bottom:.75rem;
+        padding-top: .75rem
+    }
+}
+
+.btn__primary:active,.btn__primary:hover {
+    --tw-bg-opacity: 1;
+    --tw-text-opacity: 1;
+    --tw-shadow: 0 4px 6px -1px rgba(0,0,0,.1),0 2px 4px -2px rgba(0,0,0,.1);
+    --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color),0 2px 4px -2px var(--tw-shadow-color);
+    background-color: rgb(137 0 117/var(--tw-bg-opacity));
+    box-shadow: var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow);
+    color: rgb(255 255 255/var(--tw-text-opacity));
+    text-decoration-line: none
+}
+
+.btn__primary__hover-white:active,.btn__primary__hover-white:hover {
+    --tw-bg-opacity: 1;
+    --tw-text-opacity: 1;
+    background-color: rgb(255 255 255/var(--tw-bg-opacity));
+    color: rgb(9 3 37/var(--tw-text-opacity))
+}
+
+.btn--deep-purple {
+    background-color: rgb(48 13 56/var(--tw-bg-opacity));
+    color: rgb(255 255 255/var(--tw-text-opacity))
+}
+
+.btn--deep-purple,.btn--white {
+    --tw-bg-opacity: 1;
+    --tw-text-opacity: 1
 }
