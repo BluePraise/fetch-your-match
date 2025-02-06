@@ -49,7 +49,9 @@ const Login: React.FC<LoginProps> = ({onClose}) => {
                 onChange={(e) => setEmail(e.target.value)} required />
             <button
                 className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                type="submit">Login
+                type="submit"
+                disabled={loading}>
+                {loading ? 'Logging in...' : 'Login'}
             </button>
         </form>
     </div>
