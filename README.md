@@ -1,4 +1,39 @@
 # Fetch.com - Take Home Assignment
+- React + TypeScript + Vite
+- Fetch for API calls
+- Tailwind CSS for styling
+- MaterialUI for some components
+
+## Instructions
+1. Clone the repository
+2. Run `npm install` to install dependencies
+3. Run `npm run dev` to start the development server
+
+## Features
+- [x] Separation of private and public routing
+- [x] Login to API endpoint with username and password
+- [ ] Appropriate human error messages (UX)
+- [x] Fetch a list of dogs from the API sorted by breed
+- [x] Users should be able to login (through a login screen and authenticate via the API)
+- [x] After authentication, users should be able to see a list of dogs on a searchPage.
+- [x] Users must be able to filter by breed
+- [x] Users should be able to modify this sort by breed to be ascending or descending.
+- [x] Pagination
+- [x] All fields of the Dog object (except for id) must be presented in some form
+
+### Known issues
+- Styling
+
+### Notes on the implementation
+- I chose to make sure that the core functionality was implemented before focusing on design. Design is easier to change than functionality.
+- I chose to use Tailwind CSS for styling. I don't have a lot of experience with it and this is a good opportunity to learn more about it. The trickiest for me is how to apply cascading strategy (`@theme`, `@apply` etc).
+- About Axios / Fetch. ~~Due to time restrictions, I chose Axios. Fetch wouldn't have been that much different in this case. I have experience with both. However, I do believe that they both have their own use benefits. Fetch has a cleaner API, but Axios has more features out of the box. Implementing Fetch does cause more code. Leverage depends on the project, developers etc.~~ I switched from Axios to Fetch due to Axios URL-encoding.
+
+### Problems I encountered
+- At one point I only saw chiuauhas as results.
+- I took out most of the MaterialUI components because I didn't like the design. It made the process quite messy.
+- I had to switch from Axios to Fetch because Axios URL-encoded the request (in search and pagination). It didn't make sense to make a function for a function. No Need for a Custom Query String Converter, Prevents Encoding Issues
+
 
 # React + TypeScript + Vite
 
