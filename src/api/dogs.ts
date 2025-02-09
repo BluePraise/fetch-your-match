@@ -86,3 +86,26 @@ export async function fetchDogMatch(ids: string[]) {
 
   return response.json(); // Returns { match: "dog_id" }
 }
+
+export async function fetchZipCodesByDistance(zipCode: string, distance: number) {
+  const response = await fetch(`${BASE_URL}/locations/search`, {
+    method: "POST",
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      zipCodes: [zipCode],
+      geoBoundingBox: {
+        bottom_left: { lat: -distance, lon: -distance },
+        top_right: { lat: distance, lon: distance },
+      },
+      size: 100, // Maximum number of zip codes to return
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch ZIP codes.");
+  }
+
+  const data = await response.json();
+  return data.results.map((loc: { zip_code: string }) => loc.zip_code);
+}
