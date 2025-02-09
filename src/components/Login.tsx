@@ -34,9 +34,9 @@ const Login: React.FC<LoginProps> = ({onClose}) => {
   };
 
   return (
-    <div className="text-center shadow-sm flex flex-col items-center w-2xl my-8 p-8 bg-white">
+    <div className="text-center shadow-sm flex flex-col items-center w-2xl my-8 p-8 bg-white border border-gray-200 border-r-2">
         <form className="flex flex-col items-center" onSubmit={handleSubmit}>
-            <h2 className="text-2xl my-8">Login to start</h2>
+            <h2 className="font-bold text-2xl my-8 text-fetch-purple">Login to start</h2>
             {error && <p style={{ color: 'red' }}>{error}</p>}
             <input
                 className="mb-4 border border-gray-400 p-2"

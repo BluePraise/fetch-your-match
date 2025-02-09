@@ -14,7 +14,8 @@ const Navbar: React.FC = () => {
   return (
     <nav className="p-8 bg-white flex justify-between items-center">
         <div className="">
-            <Link to="/">Fetch Home</Link>
+            {/* Link to home page */}
+            <Link to="/">Home</Link>
         </div>
         {user ? (
             <>

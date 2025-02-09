@@ -2,13 +2,16 @@
 
 @theme components {
   --color-fetch-yellow: #F5B255;
+  --color-fetch-purple: #300D38;
+  --font-display: 'Outfit', serif;
 }
 body {
-  background-color: var(--color-fetch-yellow);
+  /* background-color: var(--color-fetch-yellow); */
+    font-family: var(--font-display);
 }
 
 #root {
-  max-width: 1280px;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 2rem;
 }
@@ -18,7 +21,7 @@ body {
     border-radius: .375rem;
     color: rgb(9 3 37/var(--tw-text-opacity));
     cursor: pointer;
-    font-family: Lexend,sans-serif;
+    font-family: var(--font-display);
     font-size: 1rem;
     line-height: 1.5rem;
     text-align: center;

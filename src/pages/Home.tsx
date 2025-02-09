@@ -6,13 +6,13 @@ const Home: React.FC = () => {
   const { user } = useAuth();
   return (
     <>
-      <h1 className="text-8xl m-8 text-center">Find your best friend with your other friend: Fetch.</h1>
       {user ? (
             <>
               <SearchPage />
             </>
       ) : (
-        <div className="flex justify-center">
+        <div className="flex flex-col items-center">
+          <h1 className="text-8xl m-8 font-extrabold text-center text-fetch-purple">Find your best friend with your other friend: Fetch.</h1>
           <Login />
         </div>
       )}
