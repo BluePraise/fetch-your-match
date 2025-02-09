@@ -3,6 +3,7 @@ import {
 	fetchDogsSearch,
 	fetchDogsByIds,
 	fetchDogBreeds,
+	fetchDogMatch
 } from "../api/dogs.ts";
 
 // Dog interface as provided by the API
@@ -31,6 +32,11 @@ const SearchPage: React.FC = () => {
 	const [ageMax, setAgeMax] = useState<number | "">("");
 
 	const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc"); // Default to ascending
+
+
+	// Favorites and match state
+	const [favorites, setFavorites] = useState<string[]>([]); // Stores IDs of favorited dogs
+	const [matchDog, setMatchDog] = useState<Dog | null>(null); // Stores matched dog
 
 	// Fetch available breeds on mount
 	useEffect(() => {
@@ -122,6 +128,34 @@ const SearchPage: React.FC = () => {
 	const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
 		setSortOrder(e.target.value as "asc" | "desc");
 	};
+	// Toggle favorite dog
+  const toggleFavorite = (dogId: string) => {
+    setFavorites((prev) =>
+      prev.includes(dogId) ? prev.filter((id) => id !== dogId) : [...prev, dogId]
+    );
+  };
+
+  // Generate a match from favorites
+  const handleGenerateMatch = async () => {
+    if (favorites.length === 0) return;
+    try {
+      const result = await fetchDogMatch(favorites);
+      const matchedId = result.match;
+
+      let matchedDog = dogs.find((dog) => dog.id === matchedId);
+      if (!matchedDog) {
+        const fetchedDogs = await fetchDogsByIds([matchedId]);
+        matchedDog = fetchedDogs[0];
+      }
+
+	  if (matchedDog) {
+		setMatchDog(matchedDog);
+	  }
+    } catch (error) {
+      console.error("Error generating match:", error);
+    }
+  };
+
 
 	// Render states: loading, error, or the list of dogs
 	if (loading) return <div>Loading dogs...</div>;
@@ -211,9 +245,32 @@ return (
 				<p>{dog.breed}</p>
 				<p>{dog.age} years old</p>
 				<p>ZIP: {dog.zip_code}</p>
+				<button className={`mt-2 px-4 py-2 rounded ${
+					favorites.includes(dog.id) ? "bg-red-500 text-white" : "bg-gray-300"
+					}`} onClick={() => toggleFavorite(dog.id)}>
+					{favorites.includes(dog.id) ? "Unfavorite" : "Favorite"}
+					</button>
 			</div>
 
         ))}
+		{/* Generate Match Button */}
+			{favorites.length > 0 && (
+				<button className="mt-6 px-4 py-2 bg-green-600 text-white rounded" onClick={handleGenerateMatch}>
+				Generate Match
+				</button>
+			)}
+
+			{/* Display Matched Dog */}
+			{matchDog && (
+				<div className="mt-6 text-center">
+				<h2 className="text-2xl font-bold mb-4">Your Match:</h2>
+				<div className="border p-4 rounded shadow inline-block">
+					<img src={matchDog.img} alt={matchDog.name} className="w-40 h-40 object-cover mb-2 rounded" />
+					<h2 className="text-xl font-semibold">{matchDog.name}</h2>
+					<p>{matchDog.breed}</p>
+				</div>
+				</div>
+			)}
       </div>
 
       {/* Pagination Controls */}
