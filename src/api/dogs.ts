@@ -1,6 +1,4 @@
 // src/api/dogs.ts
-import axios from 'axios';
-
 const BASE_URL = 'https://frontend-take-home-service.fetch.com';
 
 export async function fetchDogsSearch(params?: {
@@ -12,30 +10,79 @@ export async function fetchDogsSearch(params?: {
   from?: string;
   sort?: string;
 }) {
-  const response = await axios.get(`${BASE_URL}/dogs/search`, {
-    params,
-    withCredentials: true,
+  const url = new URL(`${BASE_URL}/dogs/search`);
+
+  // Add search parameters using URLSearchParams
+  const searchParams = new URLSearchParams();
+
+  if (params) {
+    Object.entries(params).forEach(([key, value]) => {
+      if (value !== undefined && value !== "") {
+        if (Array.isArray(value)) {
+          value.forEach((val) => searchParams.append(key, val));
+        } else {
+          searchParams.append(key, String(value));
+        }
+      }
+    });
+  }
+
+  url.search = searchParams.toString(); // Attach query params to URL
+
+  const response = await fetch(url.toString(), {
+    method: "GET",
+    credentials: "include",
   });
-  return response.data; // { resultIds, total, next, prev }
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch dogs: ${response.statusText}`);
+  }
+
+  return response.json(); // { resultIds, total, next, prev }
 }
 
 export async function fetchDogsByIds(ids: string[]) {
-  const response = await axios.post(`${BASE_URL}/dogs`, ids, {
-    withCredentials: true,
+  const response = await fetch(`${BASE_URL}/dogs`, {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(ids),
   });
-  return response.data; // returns an array of Dog objects
-}
 
+  if (!response.ok) {
+    throw new Error(`Failed to fetch dog details: ${response.statusText}`);
+  }
+
+  return response.json(); // Returns an array of Dog objects
+}
 export async function fetchDogBreeds() {
-  const response = await axios.get(`${BASE_URL}/dogs/breeds`, {
-    withCredentials: true,
+  const response = await fetch(`${BASE_URL}/dogs/breeds`, {
+    method: "GET",
+    credentials: "include",
   });
-  return response.data; // returns an array of breed names
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch breeds: ${response.statusText}`);
+  }
+
+  return response.json(); // Returns an array of breed names
 }
 
 export async function fetchDogMatch(ids: string[]) {
-  const response = await axios.post(`${BASE_URL}/dogs/match`, ids, {
-    withCredentials: true,
+  const response = await fetch(`${BASE_URL}/dogs/match`, {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(ids),
   });
-  return response.data; // returns { match: string }
+
+  if (!response.ok) {
+    throw new Error(`Failed to generate match: ${response.statusText}`);
+  }
+
+  return response.json(); // Returns { match: "dog_id" }
 }
