@@ -26,8 +26,8 @@ const Login: React.FC<LoginProps> = ({onClose}) => {
       if (onClose) onClose();
       // Redirect to the Search page after successful login
       navigate('/search');
-    } catch (err) {
-      setError(`Failed to login: ${err.message}`);
+    } catch (err: unknown | Error) {
+      setError(`Failed to login: ${err}`);
     } finally {
       setLoading(false);
     }

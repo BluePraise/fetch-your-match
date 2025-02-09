@@ -28,7 +28,7 @@ function App() {
         <Route path="/logout" element={<Home />} />
 
         {/* Fallback route for non-existent paths */}
-        <Route path="*" element={<div>404: Page Not Found</div>} />
+        <Route path="*" element={<Home />} />
       </Routes>
     </Router>
   );

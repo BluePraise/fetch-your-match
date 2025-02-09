@@ -4,6 +4,9 @@
 - Tailwind CSS for styling
 - MaterialUI for some components
 
+## live demo
+[https://magaliechetrit.com/side-projects/fetch-com/](https://magaliechetrit.com/side-projects/fetch-com/)
+
 ## Instructions
 1. Clone the repository
 2. Run `npm install` to install dependencies
@@ -20,9 +23,11 @@
 - [x] Users should be able to modify this sort by breed to be ascending or descending.
 - [x] Pagination
 - [x] All fields of the Dog object (except for id) must be presented in some form
+- [x] Generate matches based upon favorite dogs.
 
 ### Known issues
 - Styling
+- Zip Code is not implemented well.
 
 ### Notes on the implementation
 - I chose to make sure that the core functionality was implemented before focusing on design. Design is easier to change than functionality.
@@ -30,8 +35,8 @@
 - About Axios / Fetch. ~~Due to time restrictions, I chose Axios. Fetch wouldn't have been that much different in this case. I have experience with both. However, I do believe that they both have their own use benefits. Fetch has a cleaner API, but Axios has more features out of the box. Implementing Fetch does cause more code. Leverage depends on the project, developers etc.~~ I switched from Axios to Fetch due to Axios URL-encoding.
 
 ### Problems I encountered
-- At one point I only saw chiuauhas as results.
-- I took out most of the MaterialUI components because I didn't like the design. It made the process quite messy.
+- At one point I only saw chiuauhas as results, this was because of the search query. This is where I switched from Axios to Fetch.
+- I took out most of the MaterialUI components because I didn't like the design. It made the process quite messy. I used the drawer and the button components.
 - I had to switch from Axios to Fetch because Axios URL-encoded the request (in search and pagination). It didn't make sense to make a function for a function. No Need for a Custom Query String Converter, Prevents Encoding Issues
 
 

@@ -53,7 +53,7 @@ const SearchPage: React.FC = () => {
 	const [drawerOpen, setDrawerOpen] = useState(false); // Controls expanded drawer
 	const [favorites, setFavorites] = useState<Dog[]>([]); // Stores favorited dogs
 	const [matchDog, setMatchDog] = useState<Dog | null>(null); // Stores matched dog
-	const [expanded, setExpanded] = useState(false); // Controls drawer animation
+
 
 	// Fetch available breeds on mount
 	useEffect(() => {
@@ -79,6 +79,7 @@ const SearchPage: React.FC = () => {
 				breeds?: string[];
 				ageMin?: number;
 				ageMax?: number;
+				zip_code?: string[];
 				from?: string;
 				sort?: string;
 			} = { size: 28, sort: `breed:${sortOrder}`};
@@ -101,7 +102,7 @@ const SearchPage: React.FC = () => {
 			if (zipCode) {
 				try {
 					const zipCodes = await fetchZipCodesByDistance(zipCode, distance);
-					params.zipCodes = zipCodes;
+					params.zip_code = zipCodes;
 				} catch (err) {
 					console.error("Error fetching ZIP codes:", err);
 					setError("Invalid ZIP code or no results in range.");
