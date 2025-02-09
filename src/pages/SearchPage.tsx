@@ -30,6 +30,8 @@ const SearchPage: React.FC = () => {
 	const [ageMin, setAgeMin] = useState<number | "">("");
 	const [ageMax, setAgeMax] = useState<number | "">("");
 
+	const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc"); // Default to ascending
+
 	// Fetch available breeds on mount
 	useEffect(() => {
 		const loadBreeds = async () => {
@@ -56,7 +58,7 @@ const SearchPage: React.FC = () => {
 				ageMax?: number;
 				from?: string;
 				sort?: string;
-			} = { size: 28, sort: "breed:asc"};
+			} = { size: 28, sort: `breed:${sortOrder}`};
 
 			// if (cursor) params.from = cursor;
 			if (cursor) {
@@ -95,7 +97,7 @@ const SearchPage: React.FC = () => {
 	// Load dogs initially on mount
 	useEffect(() => {
 		loadDogs();
-	}, []);
+	}, [sortOrder]);
 
 	// Handle filter form submission
 	const handleFilterSubmit = (e: React.FormEvent) => {
@@ -114,6 +116,11 @@ const SearchPage: React.FC = () => {
 		if (prevCursor) {
 			loadDogs(prevCursor);
 		}
+	};
+
+	// Handle sorting change
+	const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+		setSortOrder(e.target.value as "asc" | "desc");
 	};
 
 	// Render states: loading, error, or the list of dogs
@@ -140,6 +147,19 @@ return (
             {breeds.map((breed) => (
               <option key={breed} value={breed}>{breed}</option>
             ))}
+          </select>
+        </div>
+		{/* Sort Order Selection */}
+        <div>
+          <label htmlFor="sortOrder" className="block mb-1 font-semibold">Sort by Breed</label>
+          <select
+            id="sortOrder"
+            className="w-full border border-gray-300 rounded p-2"
+            value={sortOrder}
+            onChange={handleSortChange}
+          >
+            <option value="asc">A → Z</option>
+            <option value="desc">Z → A</option>
           </select>
         </div>
 

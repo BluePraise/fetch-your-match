@@ -3,6 +3,9 @@
 @theme components {
   --color-fetch-yellow: #F5B255;
 }
+body {
+  background-color: var(--color-fetch-yellow);
+}
 
 #root {
   max-width: 1280px;
